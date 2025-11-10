@@ -1,0 +1,32 @@
+[
+  {
+    "certificate": "     ",
+    "from": "AWS",
+    "year": 2020
+  },
+  {
+      "certificate": "Pega",
+      "from": "   ",
+      "year": 2020
+    },
+    {
+      "certificate": "&&^^$$%%%",
+      "from": "Microsoft",
+      "year": 2020
+    },
+    {
+      "certificate": "1234567890",
+      "from": "9876543210>",
+      "year": 2020
+    },
+    {
+      "certificate": "../../../../etc/passwd",
+      "from": "..\\..\\windows\\system32",
+      "year": 2020
+    },
+  {
+    "certificate": "CertificateWithAnExcessivelyLongNameThatShouldTriggerValidationErrorsDueToItsUnreasonableLength.................................................................",
+    "from": "OrganizationNameThatIsWayTooLongAndShouldBeRejectedByValidationLogicBecauseOfInputLengthIssues",
+    "year":2020
+  }
+]

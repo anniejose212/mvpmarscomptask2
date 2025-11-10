@@ -1,0 +1,37 @@
+﻿[
+  {
+    "university": "' OR '1'='1",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "\"; DELETE FROM degree; --",
+    "graduationYear": 2020
+  },
+  {
+    "university": "Education; DROP TABLE users; --",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "Institute'); DROP TABLE users; --",
+    "graduationYear": 2020
+  },
+  {
+    "university": "SELECT * FROM students WHERE 'a'='a",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "Bachelor'); SELECT * FROM students; --",
+    "graduationYear": 2021
+  },
+    {
+    "university": "1; EXEC xp_cmdshell('dir'); --",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "DegreeName'); EXEC xp_cmdshell('dir'); --",
+    "graduationYear": 2021
+  },
+  {
+    "university": "'; WAITFOR DELAY '00:00:10'; --",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "CourseName'); WAITFOR DELAY '00:00:10'; --",
+    "graduationYear": 2022
+  }
+]

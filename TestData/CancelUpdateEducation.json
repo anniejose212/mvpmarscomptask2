@@ -1,0 +1,16 @@
+[
+  {
+    "university": "University of Queensland",
+    "country": "Afghanistan",
+    "title": "BFA",
+    "degree": "Accounting",
+    "graduationYear": 2020
+  },
+  {
+    "university": "Australian National University",
+    "country": "Australia",
+    "title": "B.Tech",
+    "degree": "Software Engineering",
+    "graduationYear": 2022
+  }
+]

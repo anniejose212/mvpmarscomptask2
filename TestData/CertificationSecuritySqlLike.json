@@ -1,0 +1,13 @@
+[
+  {
+    "certificate": "' OR '1'='1",
+    "from": "\"; DROP TABLE certificates; --",
+    "year": 2020
+  },
+  {
+    "certificate": "Certificate; DELETE FROM users; --",
+    "from": "Organization'); DROP TABLE users; --",
+    "year": 2020
+
+  }
+]

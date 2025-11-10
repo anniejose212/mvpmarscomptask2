@@ -1,0 +1,16 @@
+[
+  {
+    "university": "Monash University",
+    "country": "Australia",
+    "title": "MFA",
+    "degree": "CS",
+    "graduationYear": 2019
+  },
+  {
+    "university": "Deakin University",
+    "country": "Algeria",
+    "title": "M.B.A",
+    "degree": "ES",
+    "graduationYear": 2023
+  }
+]

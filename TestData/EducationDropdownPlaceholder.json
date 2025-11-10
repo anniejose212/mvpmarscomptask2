@@ -1,0 +1,23 @@
+﻿[
+  {
+    "university": "PlaceholderCountryUni",
+    "country": "Country of College/University",
+    "title": "B.Sc",
+    "degree": "PlaceholderCountryDeg",
+    "graduationYear": 2020
+  },
+  {
+    "university": "PlaceholderTitleUni",
+    "country": "Australia",
+    "title": "Title",
+    "degree": "PlaceholderTitleDeg",
+    "graduationYear": 2020
+  },
+  {
+    "university": "PlaceholderYearUni",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "PlaceholderYearDeg",
+    "graduationYear": "Year of graduation"
+  }
+]
