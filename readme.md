@@ -1,199 +1,234 @@
-# QA-DotNet-Cucumber Framework
+# Mars Competition Test Automation Report
 
-A .NET-based test automation framework using Reqnroll (Cucumber for .NET), Selenium WebDriver, and NUnit. This framework
-is designed to test web applications with a clean, maintainable structure.
+## Configuration Overview
 
-## Overview
 
-This framework provides automated functional testing for web applications with the following features:
+## Automation Framework Details
 
-- **Reqnroll**: Implements Cucumber's Gherkin syntax for readable tests
-- **Selenium WebDriver**: Handles browser interactions
-- **NUnit**: Manages test execution and assertions
-- **ExtentReports**: Generates HTML test reports
-- **Page Object Model (POM)**: Separates test logic from page interactions
+### Technology Stack
+- NUnit Framework with Selenium WebDriver in C#
+- Page Object Model (POM) design pattern for UI abstraction
+- JSON reader utility to load test data from JSON files
+- Extent Reports for rich HTML reporting with screenshots on failures
 
-## Prerequisites
+### Test Data Management
+- Test data is stored as JSON files
+- Data is deserialized into strongly-typed objects used by tests
 
-- **.NET SDK**: Version 8.0 or higher (install from [dotnet.microsoft.com](https://dotnet.microsoft.com))
-- **IDE**: Visual Studio Code or Visual Studio (recommended)
-- **Chrome Browser**: Required for Selenium WebDriver (ChromeDriver version must match your browser version via
-  WebDriverManager)
+### Reporting Features
+- Extent Reports are generated automatically for each test run and saved at the configured report path
+- Screenshots of failed tests are automatically captured and attached to the report for easier debugging
+- (Recommendation) Screenshots for passing tests can be enabled manually in specific test cases for demonstration purposes
 
-## Project Structure
+```csharp 
+var screenshotPath = SaveScreenshot("TestName");
+if (!string.IsNullOrEmpty(screenshotPath)) Test.AddScreenCaptureFromPath(screenshotPath); 
+Test.Log(Status.Info, "Screenshot attached after successful add for demo purposes."); 
 
 ```
-├── Features/           # Gherkin feature files
-├── Steps/              # C# step implementations
-├── Pages/              # Page Object Model classes
-├── Hooks/              # Setup and teardown logic
-├── Config/             # Configuration classes
-├── Tests/              # NUnit test runner
-└── settings.json       # Configuration file
-```
 
-## Getting Started
+            
 
-### Installation
+### Test Lifecycle Hooks
+- Common driver setup and teardown are centralized in the Base class
+- Before and after virtual hooks clean up certification and education data to ensure clean state
+- Browser driver is initialized with settings from the JSON config
 
-1. Clone the repository:
-   ```bash
-   git clone <repository-url>
-   cd qa-dotnet-cucumber
-   ```
+### Code Organization
+- Tests for Certification and Education features are separated into dedicated test classes
+- Page Objects encapsulate all UI interactions with the certification and education pages
+- Helper classes support toast message handling and other reusable UI elements
+- Assertions use NUnit's assertion framework effectively with clear failure messages
 
-2. Restore dependencies:
-   ```bash
-   dotnet restore
-   ```
+---
 
-### Configuration
+## How to Use
 
-1. Configure `settings.json` in the project root:
-   ```json
-   {
-     "Browser": {
-       "Type": "Chrome",
-       "Headless": false,
-       "TimeoutSeconds": 30
-     },
-     "Report": {
-       "Path": "TestReport.html",
-       "Title": "Test Automation Report"
-     },
-     "Environment": {
-       "BaseUrl": "http://the-internet.herokuapp.com" 
-     }
-   }
-   ```
-   Note: Update `BaseUrl` to match your test environment.
+1. Update the `testsettings.json` configuration file for your environment.
+2. Build and run tests using NUnit test runner.
+3. After test execution, open the Extent Report located at `Reports/MarsTestReport.html`.
+4. Review detailed test logs, screenshots (on failure), and pass/fail status.
+5. Optional explicit screenshot code for passing test is available in one test case for demonstration:AddCertification_AddsRowAndShowsSuccessToast
 
-### Running Tests
 
-1. Execute tests:
-   ```bash
-   dotnet test
-   ```
+## Robustness and Security Validation Tests
 
-2. View results:
-    - Open `TestReport.html` in your browser to see the test report
+These automated tests verify that the Education and Certification modules securely handle invalid, empty, or malicious data.  
+They ensure that invalid entries are rejected, harmful scripts are neutralized, and users receive clear feedback through alerts or toast messages.
 
-## Writing Tests
+### Purpose
+- Ensure the system rejects meaningless or malformed inputs (such as whitespace or random symbols).  
+- Block cross-site scripting (XSS) attempts so that no HTML or JavaScript executes.  
+- Prevent SQL or injection-like inputs from being processed as real database queries.  
+- Confirm that appropriate error toasts are displayed and that no invalid records are saved.
 
-### Feature Files (Gherkin)
+### Standard Test Procedure
+1. Load test data from JSON files (`Education...json` / `Certification...json`).  
+2. Open the corresponding tab and fill out the form with that data.  
+3. Click **Add** to submit.  
+4. Capture all displayed alerts or toasts (`PrintAllToasts`).  
+5. Validate that:  
+   - No success toast appears.  
+   - An error toast or alert may appear.  
+   - Invalid data is not stored in the table or database.
 
-Create feature files in the `Features/` directory:
+### Test Data Types
+- **Robustness Tests:** Inputs with whitespace, special characters, or placeholder strings.  
+- **Security Tests:**  
+  - *XSS Attacks:* `<script>` tags, inline `onerror=` payloads, or embedded HTML snippets.  
+  - *SQL Injection:* Inputs like `' OR '1'='1`, `DROP TABLE`, or other query-like strings.
 
-```gherkin
-Feature: Login Functionality
-As a user, I want to log in to access restricted content.
+### Observed Results
+Most of the tests currently fail because the system accepts unsafe input without proper validation or sanitization.  
+XSS and SQL-style payloads are being stored rather than rejected, revealing weaknesses in input filtering and validation.  
+Error toasts are missing or appear inconsistently, allowing potentially harmful data to persist.
 
-Scenario: Perform a successful login
-  Given I am on the login page
-  When I enter valid credentials
-  Then I should see the secure area
-```
+### Expected Results
+All invalid, XSS, or injection-style entries should be securely blocked, trigger clear error messages, and result in no data changes.
 
-### Step Definitions
 
-Implement steps in `StepDefinitions/`:
+# 🧾 Reports and Screenshots Setup
 
-```csharp
-[Binding]
-public class LoginSteps
-{
-    private readonly LoginPage _loginPage;
-    private readonly NavigationHelper _navigationHelper;
+This project automatically generates both **Extent HTML Reports** and **Screenshots** for each test run.  
+The setup is environment-independent — it works the same locally and on GitHub Actions.
 
-    public LoginSteps(LoginPage loginPage, NavigationHelper navigationHelper)
-    {
-        _loginPage = loginPage;
-        _navigationHelper = navigationHelper;
-    }
+---
 
-    [Given("I am on the login page")]
-    public void GivenIAmOnTheLoginPage()
-    {
-        _navigationHelper.NavigateTo("/login");
-    }
+### Browser Settings
+- **Type:** Chrome
+- **Headless Mode:** Enabled
+- **Timeout:** 30 seconds
 
-    [When("I enter valid credentials")]
-    public void WhenIEnterValidCredentials()
-    {
-        _loginPage.Login("tomsmith", "SuperSecretPassword!");
-    }
 
-    [Then("I should see the secure area")]
-    public void ThenIShouldSeeTheSecureArea()
-    {
-        var successMessage = _loginPage.GetSuccessMessage();
-        Assert.That(successMessage, Does.Contain("You logged into a secure area!"));
-    }
+### Environment
+- **Base URL:** http://localhost:5003
+
+### Login Credentials
+- **Username:** testingcomp@gmail.com
+- **Password:** 123456
+
+---
+
+## 📊 Extent Report
+
+**Configured in:** `testsettings.json`
+```json
+"Report": {
+  "Path": "Reports/MarsTestReport.html",
+  "Title": "Mars Competition Test Automation Report"
 }
 ```
 
-### Page Object Model
-
-Create page classes in `Pages/`:
-
+**How the path is resolved (in `Base.cs`):**
 ```csharp
-public class LoginPage
-{
-    private readonly IWebDriver _driver;
-    private readonly By UsernameField = By.Id("username");
-    private readonly By PasswordField = By.Id("password");
-    private readonly By LoginButton = By.CssSelector("button[type='submit']");
-    private readonly By SuccessMessage = By.CssSelector(".flash.success");
-
-    public LoginPage(IWebDriver driver)
-    {
-        _driver = driver;
-    }
-
-    public void Login(string username, string password)
-    {
-        _driver.FindElement(UsernameField).SendKeys(username);
-        _driver.FindElement(PasswordField).SendKeys(password);
-        _driver.FindElement(LoginButton).Click();
-    }
-
-    public string GetSuccessMessage()
-    {
-        return _driver.FindElement(SuccessMessage).Text;
-    }
-}
+var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
+var reportPath = Path.Combine(root, Settings.Report.Path);
 ```
 
-## Configuration Options
+**📍 Final locations:**
+| Environment | Path |
+|--------------|------|
+| **Local (Windows)** | `C:\Users\<user>\source\repos\MarsNunitJson\Reports\MarsTestReport.html` |
+| **GitHub Actions (Linux)** | `/home/runner/work/MarsNunitJson/MarsNunitJson/Reports/MarsTestReport.html` |
 
-- **Browser Settings**:
-    - `Type`: Currently supports "Chrome"
-    - `Headless`: Set to `true` for headless execution
-    - `TimeoutSeconds`: Default wait timeout
+**ℹ️ Notes**
+- The `ExtentSparkReporter` writes to the path defined above.  
+- The report is finalized and flushed at the end of the run inside:
+  ```csharp
+  [OneTimeTearDown]
+  public void GlobalTeardown()
+  {
+      Extent?.Flush();
+      Console.WriteLine($"[INFO] Report flushed: {Settings?.Report?.Path}");
+  }
+  ```
 
-- **Report Settings**:
-    - `Path`: Output report filename
-    - `Title`: Report title
+---
 
-- **Environment Settings**:
-    - `BaseUrl`: Target application URL
+## 📸 Screenshots
 
-## Best Practices
+**Generated automatically** for failed tests by `SaveScreenshot()` in `Base.cs`.
 
-1. **Adding New Tests**:
-    - Write a new `.feature` file
-    - Implement steps in a new or existing step definition class
-    - Follow the Page Object Model pattern
+**Screenshot path logic:**
+```csharp
+var root = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory, "..", "..", ".."));
+var dir = Path.Combine(root, "Screenshots");
+```
 
-2. **Debugging**:
-    - Use IDE breakpoints in step definitions or page objects
-    - Check the HTML report for test execution details
+**📍 Final locations:**
+| Environment | Path |
+|--------------|------|
+| **Local (Windows)** | `C:\Users\<user>\source\repos\MarsNunitJson\Screenshots\` |
+| **GitHub Actions (Linux)** | `/home/runner/work/MarsNunitJson/MarsNunitJson/Screenshots/` |
 
-3. **Extending the Framework**:
-    - Add new page classes for different parts of the application
-    - Keep page objects focused and maintainable
-    - Follow the Single Responsibility Principle
+**📄 Example file name**
+```
+AddCertification_AddsRowAndShowsSuccessToast_20251109_115314.png
+```
 
-## Support
+**🧠 Behavior**
+- On any test failure, a screenshot is taken and attached to the HTML report.  
+- Console output example:  
+  ```
+  [SCREENSHOT] C:\Users\<user>\source\repos\MarsNunitJson\Screenshots\AddCertification_AddsRowAndShowsSuccessToast_20251109_115314.png
+  ```
 
-For additional help or questions, please reach out to the team or create an issue in the repository.
+---
+
+## ⚙️ GitHub Actions Integration
+
+To keep reports and screenshots as downloadable artifacts, add these steps to your workflow:
+
+```yaml
+- name: Upload Extent report
+  uses: actions/upload-artifact@v4
+  with:
+    name: extent-report
+    path: Reports/
+
+- name: Upload screenshots
+  uses: actions/upload-artifact@v4
+  with:
+    name: screenshots
+    path: Screenshots/
+```
+
+---
+
+## ✅ Summary
+
+| Artifact | Config Source | Example Path (Local) | Example Path (GitHub) | Generated By |
+|-----------|----------------|----------------------|------------------------|---------------|
+| **Extent Report** | `testsettings.json → Report.Path` | `...\Reports\MarsTestReport.html` | `/Reports/MarsTestReport.html` | `ExtentReports` |
+| **Screenshots** | Hardcoded in `Base.SaveScreenshot()` | `...\Screenshots\*.png` | `/Screenshots/*.png` | WebDriver on failure |
+
+---
+
+## 🧩 Troubleshooting
+
+**🟥 Report not visible?**  
+- Check `bin/Debug/net8.0/Reports/` — by default, NUnit runs from the `bin` folder.  
+- If you’ve already updated `Base.cs` to anchor reports to project root, confirm this line is printed in your test console:  
+  ```
+  [INFO] Extent report path: C:\Users\<user>\source\repos\MarsNunitJson\Reports\MarsTestReport.html
+  ```
+- If not printed, the `Base.GlobalSetup()` might not have executed or `testsettings.json` path is invalid.
+
+**🟨 Screenshots not saved?**  
+- Ensure the test actually failed. Screenshots are only taken inside the `[TearDown]` block for failed tests.  
+- Check permissions for the `Screenshots` directory.  
+- Verify that the ChromeDriver window is not being killed before `SaveScreenshot()` executes.
+
+**🟩 GitHub Actions artifacts missing?**  
+- Make sure the `upload-artifact` steps point to `Reports/` and `Screenshots/` (relative to project root).  
+- Artifacts only appear after the run completes successfully; failed jobs may skip upload unless `if: always()` is set:
+  ```yaml
+  - name: Upload Reports and Screenshots
+    if: always()
+    uses: actions/upload-artifact@v4
+    with:
+      name: test-artifacts
+      path: |
+        Reports/
+        Screenshots/
+  ```

@@ -1,0 +1,24 @@
+[
+  {
+    "certificate": "<script>alert('xss')</script>",
+    "from": "<img src=x onerror=alert(1)>",
+    "year": 2020
+  },
+  {
+    "certificate": "<iframe src='javascript:alert(1)'></iframe>",
+    "from": "<body onload=alert(1)>",
+    "year": 2021
+  },
+  {
+    "certificate": "<div style='position:absolute;top:0;left:0;width:100%;height:100%;z-index:9999;' onclick='alert(1)'></div>",
+    "from": "<a href='javascript:alert(1)'>Click me</a>",
+    "year": 2022
+  },
+  {
+    "certificate": "<svg onload=alert(1)>",
+    "from": "<video><source onerror=alert(1)></video>",
+    "year": 2017
+
+  }
+
+]

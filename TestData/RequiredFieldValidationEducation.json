@@ -1,0 +1,35 @@
+[{
+  "university": "",
+  "country": "Australia",
+  "title": "B.A",
+  "degree": "Arts",
+  "graduationYear": 2022
+},
+  {
+    "university": "RMIT",
+    "country": "",
+    "title": "B.A",
+    "degree": "Arts",
+    "graduationYear": 2022
+  },
+  {
+    "university": "RMIT",
+    "country": "Australia",
+    "title": "",
+    "degree": "Arts",
+    "graduationYear": 2022
+  },
+  {
+    "university": "RMIT",
+    "country": "Australia",
+    "title": "B.A",
+    "degree": "",
+    "graduationYear": 2022
+  },
+  {
+    "university": "RMIT",
+    "country": "Australia",
+    "title": "B.A",
+    "degree": "Arts",
+    "graduationYear": ""
+  }]

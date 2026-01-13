@@ -1,0 +1,18 @@
+{
+  "Browser": {
+    "Type": "Chrome",
+    "Headless": true,
+    "TimeoutSeconds": 30
+  },
+  "Report": {
+    "Path": "Reports/MarsTestReport.html",
+    "Title": "Mars Competition Test Automation Report"
+  },
+  "Environment": {
+    "BaseUrl": "http://localhost:5003"
+  },
+  "Login": {
+    "Username": "testingcomp@gmail.com",
+    "Password": "123456"
+  }
+}

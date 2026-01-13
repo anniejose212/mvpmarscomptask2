@@ -1,0 +1,16 @@
+﻿[
+  {
+    "university": "BoundaryMinUni",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "BoundaryMin",
+    "graduationYear": 1995
+  },
+  {
+    "university": "BoundaryMaxUni",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "BoundaryMax",
+    "graduationYear": 2025
+  }
+]

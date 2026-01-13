@@ -1,0 +1,37 @@
+﻿[
+  {
+    "university": "     ",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "     ",
+    "graduationYear": 2020
+  },
+  {
+    "university": "&&^^$$%%%",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "+++***##",
+    "graduationYear": 2020
+  },
+  {
+    "university": "1234567890",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "9876543210",
+    "graduationYear": 2020
+  },
+  {
+    "university": "../../../../etc/passwd",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "..\\..\\windows\\system32",
+    "graduationYear": 2020
+  },
+  {
+    "university": "University of Melbourne with a name exceeding the typical limit for a database field that should trigger validation errors because of its unreasonable length input used for robustness testing........................................................................................................",
+    "country": "Australia",
+    "title": "B.Sc",
+    "degree": "DegreeNameThatIsWayTooLongForAFieldAndShouldBeRejectedByValidationLogicBecauseOfInputLengthIssues",
+    "graduationYear": 2020
+  }
+]
